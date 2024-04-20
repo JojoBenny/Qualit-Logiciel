@@ -172,3 +172,99 @@ public class GestionnairePlataformeEtudiant
      listeNotes.Add(nouvelleNote);
      Console.WriteLine("Informations sauvegardées.");
  }
+
+        private void afficherReleveNotes()
+    {
+        Console.Write("Numéro de l'étudiant : ");
+        int numeroEtudiant = int.Parse(Console.ReadLine());
+
+        var notesEtudiant = listeNotes.Where(n => n.NumeroEtudiant == numeroEtudiant);
+        if (notesEtudiant.Any())
+        {
+            Console.WriteLine($"Relevé de notes pour l'étudiant numéro {numeroEtudiant}:");
+            foreach (var note in notesEtudiant)
+            {
+                Console.WriteLine($"Cours : {note.NumeroCours}, Note : {note.NoteValue}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Aucune note trouvée pour cet étudiant.");
+        }
+    }
+
+    private void afficherCoursDisponibles()
+    {
+        Console.WriteLine("Cours disponibles :");
+        foreach (var cours in listeCours)
+        {
+            Console.WriteLine($"Numéro du cours : {cours.NumeroCours}");
+            Console.WriteLine($"Code : {cours.Code}");
+            Console.WriteLine($"Titre : {cours.Titre}");
+            Console.WriteLine($"Nom du professeur : {cours.NomProfesseur}");
+            Console.WriteLine();
+        }
+    }
+
+    private void sauvegarderNotes()
+    {
+        Console.Write("Nom du fichier : ");
+        string nomFichier = Console.ReadLine();
+        using (StreamWriter writer = new StreamWriter(nomFichier + ".txt"))
+        {
+            foreach (var note in listeNotes)
+            {
+                writer.WriteLine($"Numéro d'étudiant : {note.NumeroEtudiant}, Numéro du cours : {note.NumeroCours}, Note : {note.NoteValue}");
+            }
+        }
+        Console.WriteLine("Informations  sauvegardées.");
+    }
+
+    private void fichierEtudiant(int numeroEtudiant)
+    {
+        var etudiant = listeEtudiants.FirstOrDefault(e => e.NumeroEtudiant == numeroEtudiant);
+        if (etudiant != null)
+        {
+            string nomFichier = $"Etudiant_{etudiant.NumeroEtudiant}.txt";
+            using (StreamWriter writer = new StreamWriter(nomFichier))
+            {
+                writer.WriteLine($"Numéro d'étudiant : {etudiant.NumeroEtudiant}");
+                writer.WriteLine($"Nom : {etudiant.Nom}");
+                writer.WriteLine($"Prénom : {etudiant.Prenom}");
+                writer.WriteLine($"Adresse : {etudiant.Adresse}");
+                writer.WriteLine($"Numéro de téléphone : {etudiant.NumeroDeTelephone}");
+
+            }
+            Console.WriteLine($"Fichier {nomFichier} généré avec succès.");
+        }
+        else
+        {
+            Console.WriteLine("Étudiant non trouvé.");
+        }
+    }
+
+    private void informationsFichierEtudiant(int numeroEtudiant)
+    {
+        string nomFichier = $"Etudiant_{numeroEtudiant}.txt";
+        if (File.Exists(nomFichier))
+        {
+            Console.WriteLine($"Informations du fichier {nomFichier}:");
+            string[] lignesFichier = File.ReadAllLines(nomFichier);
+            foreach (string ligne in lignesFichier)
+            {
+                Console.WriteLine(ligne);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Fichier introuvable.");
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        GestionnairePlataformeEtudiant gestionnaire = new GestionnairePlataformeEtudiant();
+        gestionnaire.Demarrage();
+    }
+}
+
