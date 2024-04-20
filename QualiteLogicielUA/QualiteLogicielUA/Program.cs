@@ -114,3 +114,61 @@ public class GestionnairePlataformeEtudiant
      listeEtudiants.Add(nouvelEtudiant);
      Console.WriteLine("Informations  sauvegardées.");
  }
+
+
+
+    private void creerCours()
+ {
+     Console.Write("Numéro du cours : ");
+     if (!int.TryParse(Console.ReadLine(), out int numero) || numero <= 0)
+     {
+         Console.WriteLine("Numéro de cours invalide.");
+         return;
+     }
+
+     if (listeCours.Any(c => c.NumeroCours == numero))
+     {
+         Console.WriteLine("Un cours avec ce numéro existe déjà.");
+         return;
+     }
+     Console.Write("Code : ");
+     string code = Console.ReadLine();
+     Console.Write("Titre : ");
+     string titre = Console.ReadLine();
+     Console.Write("Nom du professeur en charge : ");
+     string nomProfesseur = Console.ReadLine();
+
+     Cours nouveauCours = new Cours(numero, code, titre, nomProfesseur);
+     listeCours.Add(nouveauCours);
+     Console.WriteLine("Informations  sauvegardées.");
+ }
+
+ private void ajouterNote()
+ {
+     Console.Write("Numéro d'étudiant : ");
+     if (!int.TryParse(Console.ReadLine(), out int numeroEtudiant) || numeroEtudiant <= 0)
+     {
+         Console.WriteLine("Numéro d'étudiant invalide.");
+         return;
+     }
+     Console.Write("Numéro du cours : ");
+     if (!int.TryParse(Console.ReadLine(), out int numeroCours) || numeroCours <= 0)
+     {
+         Console.WriteLine("Numéro de cours invalide.");
+         return;
+     }
+     if (listeNotes.Any(n => n.NumeroEtudiant == numeroEtudiant && n.NumeroCours == numeroCours))
+     {
+         Console.WriteLine("Une note pour cette combinaison étudiant-cours existe déjà.");
+         return;
+     }
+     Console.Write("Note : ");
+     if (!double.TryParse(Console.ReadLine(), out double noteValue) || noteValue < 0 || noteValue > 100)
+     {
+         Console.WriteLine("Note invalide. Veuillez entrer une note entre 0 et 100.");
+         return;
+     }
+     Note nouvelleNote = new Note(numeroEtudiant, numeroCours, noteValue);
+     listeNotes.Add(nouvelleNote);
+     Console.WriteLine("Informations sauvegardées.");
+ }
